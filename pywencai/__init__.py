@@ -1,0 +1,1 @@
+from .wencai import getWencai
