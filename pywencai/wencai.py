@@ -11,7 +11,7 @@ def getToken():
   context= execjs.compile(jscontent)
   return context.call("v")
 
-def getWencai(**kwargs):
+def get(**kwargs):
   data = {
     'perpage': 10000,
     'page': 1,
