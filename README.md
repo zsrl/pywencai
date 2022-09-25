@@ -2,6 +2,12 @@
 
 获取同花顺问财数据
 
+## 安装
+
+```
+pip install pywencai
+···
+
 # Demo
 
 ```python
