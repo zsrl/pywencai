@@ -1,1 +1,1 @@
-from .wencai import getWencai
+from .wencai import get

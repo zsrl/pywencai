@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pywencai"
-version = "0.1.2"
+version = "0.2.0"
 description = ""
 authors = ["pluto <mayuanchi1029@gmail.com>"]
 readme = "README.md"
@@ -11,6 +11,16 @@ PyExecJS = "^1.5.1"
 requests = "^2.28.1"
 pandas = "^1.5.0"
 
+
+[[tool.poetry.source]]
+name = "tsinghua"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true
+secondary = false
+
+
+[tool.poetry.group.dev.dependencies]
+notebook = "^6.4.12"
 
 [build-system]
 requires = ["poetry-core"]
