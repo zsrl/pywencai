@@ -6,7 +6,7 @@
 
 ```
 pip install pywencai
-···
+```
 
 # Demo
 
