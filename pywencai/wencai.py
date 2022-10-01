@@ -6,7 +6,7 @@ import pandas as pd
 
 # 获取token
 def getToken():
-  with open(os.path.join(__file__, os.pardir, './hexin-v.js'), 'r') as f:
+  with open(os.path.join(__file__, os.pardir, 'hexin-v.js'), 'r') as f:
     jscontent = f.read()
   context= execjs.compile(jscontent)
   return context.call("v")
