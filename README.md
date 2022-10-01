@@ -16,6 +16,9 @@ import pywencai
 res = pywencai.get(question='退市股票', sort_key='退市@退市日期', sort_order='asc')
 print(res)
 ```
+
+[demo.ipynb](./demo.ipynb)
+
 # API
 
 ## get(**kwargs)
