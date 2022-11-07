@@ -23,7 +23,8 @@ res = pywencai.get(question='退市股票', sort_key='退市@退市日期', sort
 print(res)
 ```
 
-[demo.ipynb](./demo.ipynb)
+<img src="./demo.ipynb" width=400>
+<!-- [demo.ipynb]() -->
 
 # API
 
