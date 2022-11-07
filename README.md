@@ -23,8 +23,7 @@ res = pywencai.get(question='退市股票', sort_key='退市@退市日期', sort
 print(res)
 ```
 
-<img src="./demo.ipynb" width=400>
-<!-- [demo.ipynb]() -->
+[demo.ipynb](./demo.ipynb)
 
 # API
 
@@ -70,4 +69,4 @@ print(res)
 
 欢迎加入飞书群，群内有大量量化资料分享
 
-![二维码](./qrcode.png)
+<img src="./qrcode.png" width=400>
