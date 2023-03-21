@@ -67,6 +67,6 @@ print(res)
 
 ## 联系方式
 
-欢迎加入飞书群，群内有大量量化资料分享
+欢迎加入QQ群，分享量化技术！
 
 <img src="./qrcode.png" width=400>
