@@ -13,14 +13,39 @@ def getToken():
 
 # 替换key
 def replace_key(key):
-    if key == 'question':
-      return 'query'
-    elif key == 'sort_key':
-      return 'urp_sort_index'
-    elif key == 'sort_order':
-      return 'urp_sort_way'
-    else:
-      return key
+    key_map = {
+        'question': 'query',
+        'sort_key': 'urp_sort_index',
+        'sort_order': 'urp_sort_way'
+    }
+    return key_map.get(key, key)
+
+# 获取comp_id和uuid
+def getIds(query_type):
+  ids_map = {
+    'stock': {
+      'comp_id': 6623802,
+      'uuid': 24087
+    },
+    'zhishu': {
+      'comp_id': 5473251,
+      'uuid': 24089
+    },
+    'fund': {
+      'comp_id': 6546054,
+      'uuid': 24088
+    },
+    'hkstock': {
+      'comp_id': 6546042,
+      'uuid': 18150
+    },
+    'usstock': {
+      'comp_id': 6546050,
+      'uuid': 11589
+    }
+  }
+  return ids_map.get(query_type, {})
+
 
 # 获取每页数据
 def getPage(**kwargs):
@@ -29,8 +54,7 @@ def getPage(**kwargs):
     'perpage': 100,
     'page': 1,
     'source': 'Ths_iwencai_Xuangu',
-    'comp_id': 6623802,
-    'uuid': 24087,
+    **getIds(kwargs.get('query_type', 'stock')),
     **kwargs
   }
   res = rq.request(

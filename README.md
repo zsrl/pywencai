@@ -61,6 +61,18 @@ print(res)
 
 当设置具体数值`n`时，循环请求n页，返回n页合并数据。
 
+#### query_type
+
+非必填，默认为`stock`，当查询的类型不是股票的时候需要传，取值如下：
+
+| 取值 | 含义 |
+|-|-|
+| stock | 股票 |
+| zhishu | 指数 |
+| fund | 基金 |
+| hkstock | 港股 |
+| usstock | 美股 |
+
 ### 返回值
 
 该方法返回一个`pandas`的`Dataframe`
