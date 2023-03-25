@@ -11,8 +11,6 @@ logging.basicConfig(
     format='[pywencai] %(asctime)s - %(levelname)s - %(message)s'
 )
 
-# logging.getLogger().addHandler(logging.StreamHandler())
-
 # 获取token
 def getToken():
   with open(os.path.join(os.path.dirname(__file__), 'hexin-v.js'), 'r') as f:
@@ -60,7 +58,8 @@ def getIds(query_type):
 def getPage(**kwargs):
   kwargs = {replace_key(key): value for key, value in kwargs.items()}
   retry = kwargs.pop('retry', 10)
-  sleep = kwargs.pop('sleep', 1)
+  sleep = kwargs.pop('sleep', 0)
+  log = kwargs.pop('log', False)
 
   data = {
     'perpage': 100,
@@ -70,7 +69,7 @@ def getPage(**kwargs):
     **kwargs
   }
   count = 0
-  logging.info(f'第{data.get("page")}页开始')
+  log and logging.info(f'第{data.get("page")}页开始')
 
   while count < retry :
     time.sleep(sleep)
@@ -87,12 +86,12 @@ def getPage(**kwargs):
       )
       result = json.loads(res.text)
       list = result['answer']['components'][0]['data']['datas']
-      logging.info(f'第{data.get("page")}页成功')
+      log and logging.info(f'第{data.get("page")}页成功')
       return pd.DataFrame.from_dict(list)
     except:
-      logging.warning(f'{count+1}次尝试失败')
+      log and logging.warning(f'{count+1}次尝试失败')
       count+=1
-  logging.error(f'第{data.get("page")}页失败')
+  log and logging.error(f'第{data.get("page")}页失败')
   return pd.DataFrame.from_dict([])
   
 
