@@ -18,6 +18,40 @@ def getToken():
   context= execjs.compile(jscontent)
   return context.call("v")
 
+# 获取condition
+def getCondition(**kwargs):
+  retry = kwargs.get('retry', 10)
+  sleep = kwargs.get('sleep', 0)
+  question = kwargs.get('query')
+  log = kwargs.get('log', False)
+  data = {
+    'perpage': 10,
+    'page': 1,
+    'source': 'Ths_iwencai_Xuangu',
+    'question': question
+  }
+
+  count = 0
+  log and logging.info(f'获取condition开始')
+
+  while count < retry :
+    time.sleep(sleep)
+    res = rq.request(
+      method='POST',
+      url='http://www.iwencai.com/customized/chart/get-robot-data',
+      json=data,
+      headers={
+        'hexin-v': getToken(),
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36'
+      }
+    )
+    result = json.loads(res.text)
+    condition = result['data']['answer'][0]['txt'][0]['content']['components'][0]['data']['meta']['extra']['condition']
+    log and logging.info(f'获取condition成功')
+    return condition
+  log and logging.info(f'获取condition失败')
+  return None
+
 # 替换key
 def replace_key(key):
     key_map = {
@@ -56,7 +90,6 @@ def getIds(query_type):
 
 # 获取每页数据
 def getPage(**kwargs):
-  kwargs = {replace_key(key): value for key, value in kwargs.items()}
   retry = kwargs.pop('retry', 10)
   sleep = kwargs.pop('sleep', 0)
   log = kwargs.pop('log', False)
@@ -125,6 +158,8 @@ def loopPage(loop, **kwargs):
 
 # 获取结果
 def get(loop=False, **kwargs):
+  kwargs = {replace_key(key): value for key, value in kwargs.items()}
+  kwargs['condition'] = getCondition(**kwargs)
   if loop:
     return loopPage(loop, **kwargs)
   else:
