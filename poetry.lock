@@ -271,6 +271,22 @@ url = "https://pypi.tuna.tsinghua.edu.cn/simple"
 reference = "tsinghua"
 
 [[package]]
+name = "fake-useragent"
+version = "1.1.1"
+description = "Up-to-date simple useragent faker with real world database"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+importlib-resources = {version = ">=5.0", markers = "python_version < \"3.10\""}
+
+[package.source]
+type = "legacy"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+reference = "tsinghua"
+
+[[package]]
 name = "fastjsonschema"
 version = "2.16.2"
 description = "Fastest Python implementation of JSON schema"
@@ -324,7 +340,7 @@ reference = "tsinghua"
 name = "importlib-resources"
 version = "5.9.0"
 description = "Read resources from Python packages"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -1305,7 +1321,7 @@ reference = "tsinghua"
 name = "zipp"
 version = "3.8.1"
 description = "Backport of pathlib-compatible object wrapper for zip files"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 
@@ -1321,7 +1337,7 @@ reference = "tsinghua"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8, <3.11"
-content-hash = "cb521067527cc106c009bcdc2ebde6347718e06a78cd5701e3c74c7c540c48fc"
+content-hash = "6d501f6e651aec4b790350a84638cbda39b7a1b1ed7160bb6a9edc922242affc"
 
 [metadata.files]
 appnope = [
@@ -1488,6 +1504,10 @@ entrypoints = [
 executing = [
     {file = "executing-1.1.0-py2.py3-none-any.whl", hash = "sha256:4a6d96ba89eb3dcc11483471061b42b9006d8c9f81c584dd04246944cd022530"},
     {file = "executing-1.1.0.tar.gz", hash = "sha256:2c2c07d1ec4b2d8f9676b25170f1d8445c0ee2eb78901afb075a4b8d83608c6a"},
+]
+fake-useragent = [
+    {file = "fake-useragent-1.1.1.tar.gz", hash = "sha256:579c72b18ba792a5bd54ba48e63e464d21933e336472c974091a6757f31bfcdc"},
+    {file = "fake_useragent-1.1.1-py3-none-any.whl", hash = "sha256:9f9b3667d3741ba81e34ebf9a6aa32658ecf7835499257826dd72642af629d59"},
 ]
 fastjsonschema = [
     {file = "fastjsonschema-2.16.2-py3-none-any.whl", hash = "sha256:21f918e8d9a1a4ba9c22e09574ba72267a6762d47822db9add95f6454e51cc1c"},

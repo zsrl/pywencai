@@ -5,6 +5,9 @@ import requests as rq
 import pandas as pd
 import time
 import logging
+from fake_useragent import UserAgent
+
+ua = UserAgent()
 
 logging.basicConfig(
     level=logging.INFO,
@@ -42,7 +45,7 @@ def getCondition(**kwargs):
       json=data,
       headers={
         'hexin-v': getToken(),
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36'
+        'User-Agent': ua.random
       }
     )
     result = json.loads(res.text)
@@ -113,7 +116,7 @@ def getPage(**kwargs):
         data=data,
         headers={
           'hexin-v': getToken(),
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36'
+          'User-Agent': ua.random
         },
         timeout=(5, 10)
       )
