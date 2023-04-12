@@ -27,10 +27,12 @@ def getCondition(**kwargs):
   sleep = kwargs.get('sleep', 0)
   question = kwargs.get('query')
   log = kwargs.get('log', False)
+  query_type = kwargs.get('query_type', 'stock')
   data = {
     'perpage': 10,
     'page': 1,
     'source': 'Ths_iwencai_Xuangu',
+    'secondary_intent': query_type,
     'question': question
   }
 
@@ -68,11 +70,11 @@ def replace_key(key):
 def getIds(query_type):
   ids_map = {
     'stock': {
-      'comp_id': 6623802,
+      'comp_id': 6729244,
       'uuid': 24087
     },
     'zhishu': {
-      'comp_id': 5473251,
+      'comp_id': 6367801,
       'uuid': 24089
     },
     'fund': {
