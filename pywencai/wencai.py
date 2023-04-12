@@ -22,7 +22,7 @@ def getToken():
   return context.call("v")
 
 # 获取condition
-def getCondition(**kwargs):
+def getParams(**kwargs):
   retry = kwargs.get('retry', 10)
   sleep = kwargs.get('sleep', 0)
   question = kwargs.get('query')
@@ -51,10 +51,15 @@ def getCondition(**kwargs):
       }
     )
     result = json.loads(res.text)
-    condition = result['data']['answer'][0]['txt'][0]['content']['components'][0]['data']['meta']['extra']['condition']
-    log and logging.info(f'获取condition成功')
-    return condition
-  log and logging.info(f'获取condition失败')
+    params = {
+      'condition': result['data']['answer'][0]['txt'][0]['content']['components'][0]['data']['meta']['extra']['condition'],
+      'comp_id': result['data']['answer'][0]['txt'][0]['content']['components'][0]['cid'],
+      'uuid': result['data']['answer'][0]['txt'][0]['content']['components'][0]['puuid']
+    }
+    
+    log and logging.info(f'获取params成功')
+    return params
+  log and logging.info(f'获取params失败')
   return None
 
 # 替换key
@@ -65,32 +70,6 @@ def replace_key(key):
         'sort_order': 'urp_sort_way'
     }
     return key_map.get(key, key)
-
-# 获取comp_id和uuid
-def getIds(query_type):
-  ids_map = {
-    'stock': {
-      'comp_id': 6729244,
-      'uuid': 24087
-    },
-    'zhishu': {
-      'comp_id': 6367801,
-      'uuid': 24089
-    },
-    'fund': {
-      'comp_id': 6546054,
-      'uuid': 24088
-    },
-    'hkstock': {
-      'comp_id': 6546042,
-      'uuid': 18150
-    },
-    'usstock': {
-      'comp_id': 6546050,
-      'uuid': 11589
-    }
-  }
-  return ids_map.get(query_type, {})
 
 
 # 获取每页数据
@@ -103,7 +82,6 @@ def getPage(**kwargs):
     'perpage': 100,
     'page': 1,
     'source': 'Ths_iwencai_Xuangu',
-    **getIds(kwargs.get('query_type', 'stock')),
     **kwargs
   }
   count = 0
@@ -164,7 +142,8 @@ def loopPage(loop, **kwargs):
 # 获取结果
 def get(loop=False, **kwargs):
   kwargs = {replace_key(key): value for key, value in kwargs.items()}
-  kwargs['condition'] = getCondition(**kwargs)
+  params = getParams(**kwargs)
+  kwargs = {**kwargs, **params}
   if loop:
     return loopPage(loop, **kwargs)
   else:
