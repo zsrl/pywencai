@@ -1,3 +1,5 @@
+[![PyPI version](https://badge.fury.io/py/pywencai.svg)](https://badge.fury.io/py/pywencai)
+[![Downloads](https://static.pepy.tech/badge/pywencai/month)](https://pepy.tech/project/pywencai)
 # pywencai
 
 获取同花顺问财数据
