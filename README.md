@@ -74,6 +74,12 @@ print(res)
 | fund | 基金 |
 | hkstock | 港股 |
 | usstock | 美股 |
+| threeboard | 新三板 |
+| conbond | 可转债 |
+| insurance | 保险 |
+| futures | 期货 |
+| lccp | 理财 |
+| foreign_exchange | 外汇 |
 
 #### retry
 
