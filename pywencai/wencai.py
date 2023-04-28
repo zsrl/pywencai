@@ -15,14 +15,14 @@ logging.basicConfig(
 )
 
 # 获取token
-def getToken():
+def get_token():
   with open(os.path.join(os.path.dirname(__file__), 'hexin-v.js'), 'r') as f:
     jscontent = f.read()
   context= execjs.compile(jscontent)
   return context.call("v")
 
 # 获取condition
-def getParams(**kwargs):
+def get_robot_data(**kwargs):
   retry = kwargs.get('retry', 10)
   sleep = kwargs.get('sleep', 0)
   question = kwargs.get('query')
@@ -46,20 +46,32 @@ def getParams(**kwargs):
       url='http://www.iwencai.com/customized/chart/get-robot-data',
       json=data,
       headers={
-        'hexin-v': getToken(),
+        'hexin-v': get_token(),
         'User-Agent': ua.random
       }
     )
     result = json.loads(res.text)
-    params = {
-      'condition': result['data']['answer'][0]['txt'][0]['content']['components'][0]['data']['meta']['extra']['condition'],
-      'comp_id': result['data']['answer'][0]['txt'][0]['content']['components'][0]['cid'],
-      'uuid': result['data']['answer'][0]['txt'][0]['content']['components'][0]['puuid']
-    }
+    content = result['data']['answer'][0]['txt'][0]['content']
+    if type(content) == str:
+      content = json.loads(content)
+    components0 = content['components'][0]
+    meta = components0['data']['meta']
+    params = {}
+    if meta:
+      params = {
+        'condition': components0['data']['meta']['extra']['condition'],
+        'comp_id': components0['cid'],
+        'uuid': components0['puuid']
+      }
+    else:
+      datas = components0['data']['datas']
+      params = {
+        'datas': pd.DataFrame.from_dict(datas)
+      }
     
-    log and logging.info(f'获取params成功')
+    log and logging.info(f'获取get_robot_data成功')
     return params
-  log and logging.info(f'获取params失败')
+  log and logging.info(f'获取get_robot_data失败')
   return None
 
 # 替换key
@@ -73,7 +85,7 @@ def replace_key(key):
 
 
 # 获取每页数据
-def getPage(**kwargs):
+def get_page(**kwargs):
   retry = kwargs.pop('retry', 10)
   sleep = kwargs.pop('sleep', 0)
   log = kwargs.pop('log', False)
@@ -95,7 +107,7 @@ def getPage(**kwargs):
         url='http://www.iwencai.com/gateway/urp/v7/landing/getDataList',
         data=data,
         headers={
-          'hexin-v': getToken(),
+          'hexin-v': get_token(),
           'User-Agent': ua.random
         },
         timeout=(5, 10)
@@ -112,14 +124,14 @@ def getPage(**kwargs):
   
 
 # 是否继续循环
-def canLoop(loop, count):
+def can_loop(loop, count):
   if (loop is True):
     return True
   else: 
     return count < loop
 
 # 循环分页
-def loopPage(loop, **kwargs):
+def loop_page(loop, **kwargs):
   count = 0
   resultPageLen = 1
   result = None
@@ -127,9 +139,9 @@ def loopPage(loop, **kwargs):
     kwargs['page'] = 1
   initPage = kwargs['page']
 
-  while resultPageLen > 0 and canLoop(loop, count):
+  while resultPageLen > 0 and can_loop(loop, count):
     kwargs['page'] = initPage + count
-    resultPage = getPage(**kwargs)
+    resultPage = get_page(**kwargs)
     resultPageLen = len(resultPage)
     count = count + 1
     if result is None:
@@ -142,9 +154,13 @@ def loopPage(loop, **kwargs):
 # 获取结果
 def get(loop=False, **kwargs):
   kwargs = {replace_key(key): value for key, value in kwargs.items()}
-  params = getParams(**kwargs)
-  kwargs = {**kwargs, **params}
-  if loop:
-    return loopPage(loop, **kwargs)
+  params = get_robot_data(**kwargs)
+  datas = params.get('datas', None)
+  if datas is not None:
+    return datas
   else:
-    return getPage(**kwargs)
+    kwargs = {**kwargs, **params}
+    if loop:
+      return loop_page(loop, **kwargs)
+    else:
+      return get_page(**kwargs)
