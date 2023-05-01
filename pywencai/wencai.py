@@ -28,6 +28,7 @@ def get_robot_data(**kwargs):
   question = kwargs.get('query')
   log = kwargs.get('log', False)
   query_type = kwargs.get('query_type', 'stock')
+  cookie = kwargs.get('cookie', None)
   data = {
     'perpage': 10,
     'page': 1,
@@ -47,7 +48,8 @@ def get_robot_data(**kwargs):
       json=data,
       headers={
         'hexin-v': get_token(),
-        'User-Agent': ua.random
+        'User-Agent': ua.random,
+        'cookie': cookie
       }
     )
     result = json.loads(res.text)
@@ -89,6 +91,7 @@ def get_page(**kwargs):
   retry = kwargs.pop('retry', 10)
   sleep = kwargs.pop('sleep', 0)
   log = kwargs.pop('log', False)
+  cookie = kwargs.pop('cookie', None)
 
   data = {
     'perpage': 100,
@@ -108,7 +111,8 @@ def get_page(**kwargs):
         data=data,
         headers={
           'hexin-v': get_token(),
-          'User-Agent': ua.random
+          'User-Agent': ua.random,
+          'cookie': cookie
         },
         timeout=(5, 10)
       )

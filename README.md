@@ -93,6 +93,10 @@ print(res)
 
 非必填，默认为Flase，是否在控制台打印日志。
 
+#### cookie
+
+非必填，默认为None，付费版可以尝试传入cookie，获取付费使用权限。
+
 ### 返回值
 
 该方法返回一个`pandas`的`Dataframe`
@@ -102,3 +106,10 @@ print(res)
 欢迎加入QQ群，分享量化技术！
 
 <img src="./qrcode.png" width=400>
+
+微信公众号
+
+<img src="./weixin.jpg" width=400>
+
+
+
