@@ -99,7 +99,9 @@ print(res)
 
 ### 返回值
 
-该方法返回一个`pandas`的`Dataframe`
+当查询的是列表时，该方法返回一个`pandas`的`Dataframe`
+
+当查询的是详情是，该方法返回一个字典，字典中可能包含若干个文本和`Dataframe`
 
 ## 联系方式
 

@@ -16,9 +16,13 @@ PyExecJS = "^1.5.1"
 requests = "*"
 pandas = {version = "^1.5.0 || ^2.0.0"}
 fake-useragent = "^1.1.1"
+pydash = "^7.0.3"
 
 [tool.poetry.group.dev.dependencies]
 notebook = "^6.4.12"
+mypy = "^1.2.0"
+autopep8 = "^2.0.2"
+types-requests = "^2.30.0.0"
 
 [build-system]
 requires = ["poetry-core"]
