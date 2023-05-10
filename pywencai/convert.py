@@ -10,13 +10,21 @@ def xuangu_tableV1_handler(comp, comps):
         'uuid': comp['puuid']
     }
 
+def common_handler(comp, comps):
+    '''common类型'''
+    datas = _.get(comp, 'data.datas')
+    if isinstance(datas, list):
+        return pd.DataFrame.from_dict(datas)
+    else:
+        return None
+
 def container_handler(comp, comps):
     '''container类型'''
     result = {}
     for uuid in _.get(comp, 'config.children', []):
         child = _.find(comps, lambda c: c.get('uuid') == uuid)
         key = _.get(child, 'show_type')
-        if key is not None:
+        if key is not None and key != '':
             result[key] = show_type_handler(child, comps)
     return result
 
@@ -25,18 +33,45 @@ def txt1_handler(comp, comps):
     content = _.get(comp, 'data.content')
     return content
 
+def tab4_handler(comp, comps):
+    '''tab4类型'''
+    result = {}
+    for tab in comp.get('tab_list'):
+        tab_name = tab.get('tab_name')
+        tab_list = tab.get('list')
+        if tab_name is not None:
+            tabResult = result[tab_name] = {}
+            for tcomp in tab_list:
+                show_type = tcomp.get('show_type')
+                tabResult[show_type] = show_type_handler(tcomp, tab_list)
+    return result
 
-def barline3_handler(comp, comps):
-    '''barline3类型'''
-    datas = _.get(comp, 'data.datas')
-    return pd.DataFrame.from_dict(datas)
+def dragon_tiger_stock_handler(comp, comps):
+    '''龙虎榜分析'''
+    result ={}
+    data = _.get(comp, 'data.datas.0')
+    detail = data.pop('detail', None)
+    
+    result['data'] = pd.DataFrame.from_dict([data])
+    if detail is not None:
+        result['detail'] = {
+            'buy': pd.DataFrame.from_dict(_.get(detail[0], 'buy.datas')),
+            'sell': pd.DataFrame.from_dict(_.get(detail[0], 'sell.datas'))
+        }
+    return result
+
+def table2_handler(comp, comps):
+    data = _.get(comp, 'data')
+    return pd.DataFrame.from_dict(data)
+
 
 show_type_handler_dict = {
     'xuangu_tableV1': xuangu_tableV1_handler,
     'container': container_handler,
     'txt1': txt1_handler,
-    'barline3': barline3_handler,
-    'tableV1': barline3_handler
+    'tab4': tab4_handler,
+    'dragon_tiger_stock': dragon_tiger_stock_handler,
+    'table2': table2_handler
 }
 
 
@@ -54,7 +89,7 @@ def show_type_handler(comp, comps):
     if handler is not None:
         return handler(comp, comps)
     else:
-        return None
+        return common_handler(comp, comps)
 
 def multi_show_type_handler(components):
     '''处理多个show_type类型的数据'''
@@ -63,7 +98,7 @@ def multi_show_type_handler(components):
     for comp in comps:
         key = _.get(comp, 'title_config.data.h1')
         value = show_type_handler(comp, components)
-        if key is not None and value is not None:
+        if key is not None and key != '' and value is not None:
             result[key] = value
 
     return result
