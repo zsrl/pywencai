@@ -26,7 +26,7 @@ jobs:
 
       - name: Generate Changelog
         run: |
-          auto-changelog --template keepachangelog
+          auto-changelog --template keepachangelog -p
           python -c "import yaml; changelog = yaml.safe_load(open('CHANGELOG.md')); open('changelog.yml', 'w').write(yaml.dump(changelog, default_flow_style=False))"
 
       - name: Create Release
