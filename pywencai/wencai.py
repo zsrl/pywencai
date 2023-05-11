@@ -25,6 +25,19 @@ def get_token():
     return context.call("v")
 
 
+def while_do(do, retry=10, sleep=0, log=False):
+    count = 0
+    while count < retry:
+        time.sleep(sleep)
+        try:
+            return do()
+        except:
+            log and logging.warning(f'{count+1}次尝试失败')
+            count += 1
+    # log and logging.info(f'获取get_robot_data失败')
+    return None
+
+
 def get_robot_data(**kwargs):
     '''获取condition'''
     retry = kwargs.get('retry', 10)
@@ -44,8 +57,7 @@ def get_robot_data(**kwargs):
     count = 0
     log and logging.info(f'获取condition开始')
 
-    while count < retry:
-        time.sleep(sleep)
+    def do():
         res = rq.request(
             method='POST',
             url='http://www.iwencai.com/customized/chart/get-robot-data',
@@ -59,8 +71,13 @@ def get_robot_data(**kwargs):
         params = convert_params(res)
         log and logging.info(f'获取get_robot_data成功')
         return params
-    log and logging.info(f'获取get_robot_data失败')
-    return None
+
+    result = while_do(do, retry, sleep, log)
+
+    if result is None:
+        log and logging.info(f'获取get_robot_data失败')
+
+    return result
 
 
 def replace_key(key):
@@ -89,29 +106,29 @@ def get_page(**kwargs):
     count = 0
     log and logging.info(f'第{data.get("page")}页开始')
 
-    while count < retry:
-        time.sleep(sleep)
-        try:
-            res = rq.request(
-                method='POST',
-                url='http://www.iwencai.com/gateway/urp/v7/landing/getDataList',
-                data=data,
-                headers={
-                    'hexin-v': get_token(),
-                    'User-Agent': ua.random,
-                    'cookie': cookie
-                },
-                timeout=(5, 10)
-            )
-            result = json.loads(res.text)
-            list = result['answer']['components'][0]['data']['datas']
-            log and logging.info(f'第{data.get("page")}页成功')
-            return pd.DataFrame.from_dict(list)
-        except:
-            log and logging.warning(f'{count+1}次尝试失败')
-            count += 1
-    log and logging.error(f'第{data.get("page")}页失败')
-    return pd.DataFrame.from_dict([])
+    def do():
+        res = rq.request(
+            method='POST',
+            url='http://www.iwencai.com/gateway/urp/v7/landing/getDataList',
+            data=data,
+            headers={
+                'hexin-v': get_token(),
+                'User-Agent': ua.random,
+                'cookie': cookie
+            },
+            timeout=(5, 10)
+        )
+        result = json.loads(res.text)
+        list = result['answer']['components'][0]['data']['datas']
+        log and logging.info(f'第{data.get("page")}页成功')
+        return pd.DataFrame.from_dict(list)
+    
+    result = while_do(do, retry, sleep, log)
+
+    if result is None:
+        log and logging.error(f'第{data.get("page")}页失败')
+
+    return result
 
 
 def can_loop(loop, count):

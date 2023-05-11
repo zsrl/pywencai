@@ -8,20 +8,44 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build and publish to pypi
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml
+          pip install auto-changelog
+
+      - name: Build and publish to PyPI
         uses: JRubics/poetry-publish@v1.13
         with:
+          ignore_dev_requirements: "yes"
           pypi_token: ${{ secrets.PYPI_TOKEN }}
-      - name: "✏️ Generate release changelog"
-        uses: heinrichreimer/github-changelog-generator-action@v2.3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }} 
-      - name: release
-        uses: softprops/action-gh-release@v1
+
+      - name: Generate Changelog
+        run: |
+          auto-changelog --template keepachangelog
+          python -c "import yaml; changelog = yaml.safe_load(open('CHANGELOG.md')); open('changelog.yml', 'w').write(yaml.dump(changelog, default_flow_style=False))"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          files: |
-            myapp.txt
-          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
           body_path: CHANGELOG.md
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: myapp.txt
+          asset_name: myapp.txt
+          asset_content_type: application/octet-stream
