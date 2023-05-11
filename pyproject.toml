@@ -11,21 +11,19 @@ url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
 default = true
 
 [tool.poetry.dependencies]
-python = "^3.6.8"
+python = "^3.8"
 PyExecJS = "^1.5.1"
 requests = "*"
-pandas = {version = "^1.1.0 || ^2.0.0"}
+pandas = {version = "^1.5.0 || ^2.0.0"}
 fake-useragent = "^1.1.1"
-pydash = {version = "^5.1.2 || ^7.0.3"}
+pydash = "^7.0.3"
 
 [tool.poetry.group.dev.dependencies]
-notebook = {version = "^6.4.0 || ^7.0.3"}
-mypy = {version = "^0.971 || ^1.2.0"}
+notebook = "^6.4.12"
+mypy = "^1.2.0"
 autopep8 = "^2.0.2"
 types-requests = "^2.30.0.0"
-pywin32 = "305"
-pywinpty="1.1.6"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
