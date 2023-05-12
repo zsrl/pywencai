@@ -97,6 +97,15 @@ print(res)
 
 非必填，默认为None，付费版可以尝试传入cookie，获取付费使用权限。
 
+#### request_params
+
+非必填，默认为`{}`，可以设置额外的request参数
+
+```python
+pywencai.get(question='昨日涨幅', sort_order='asc', loop=True, log=True, request_params={ 'proxies': proxies, 'timeout': (5, 10) })
+```
+> 具体参数参看：[https://requests.readthedocs.io/en/latest/api/#requests.request](https://requests.readthedocs.io/en/latest/api/#requests.request)
+
 ### 返回值
 
 当查询的是列表时，该方法返回一个`pandas`的`Dataframe`

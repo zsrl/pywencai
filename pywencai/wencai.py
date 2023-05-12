@@ -46,6 +46,7 @@ def get_robot_data(**kwargs):
     log = kwargs.get('log', False)
     query_type = kwargs.get('query_type', 'stock')
     cookie = kwargs.get('cookie', None)
+    request_params = kwargs.get('request_params', {})
     data = {
         'perpage': 10,
         'page': 1,
@@ -66,7 +67,8 @@ def get_robot_data(**kwargs):
                 'hexin-v': get_token(),
                 'User-Agent': ua.random,
                 'cookie': cookie
-            }
+            },
+            **request_params
         )
         params = convert_params(res)
         log and logging.info(f'获取get_robot_data成功')
@@ -96,6 +98,7 @@ def get_page(**kwargs):
     sleep = kwargs.pop('sleep', 0)
     log = kwargs.pop('log', False)
     cookie = kwargs.pop('cookie', None)
+    request_params = kwargs.get('request_params', {})
 
     data = {
         'perpage': 100,
@@ -116,7 +119,8 @@ def get_page(**kwargs):
                 'User-Agent': ua.random,
                 'cookie': cookie
             },
-            timeout=(5, 10)
+            timeout=(5, 10),
+            **request_params
         )
         result = json.loads(res.text)
         list = result['answer']['components'][0]['data']['datas']
