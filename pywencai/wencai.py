@@ -1,29 +1,16 @@
-import os
-import execjs
 import json
 import requests as rq
 import pandas as pd
 import time
 import logging
-from fake_useragent import UserAgent
-from pywencai.convert import convert_params
 import pydash as _
-
-ua = UserAgent()
+from pywencai.convert import convert
+from pywencai.headers import headers
 
 logging.basicConfig(
     level=logging.INFO,
     format='[pywencai] %(asctime)s - %(levelname)s - %(message)s'
 )
-
-
-def get_token():
-    '''获取token'''
-    with open(os.path.join(os.path.dirname(__file__), 'hexin-v.js'), 'r') as f:
-        jscontent = f.read()
-    context = execjs.compile(jscontent)
-    return context.call("v")
-
 
 def while_do(do, retry=10, sleep=0, log=False):
     count = 0
@@ -34,7 +21,6 @@ def while_do(do, retry=10, sleep=0, log=False):
         except:
             log and logging.warning(f'{count+1}次尝试失败')
             count += 1
-    # log and logging.info(f'获取get_robot_data失败')
     return None
 
 
@@ -63,14 +49,10 @@ def get_robot_data(**kwargs):
             method='POST',
             url='http://www.iwencai.com/customized/chart/get-robot-data',
             json=data,
-            headers={
-                'hexin-v': get_token(),
-                'User-Agent': ua.random,
-                'cookie': cookie
-            },
+            headers=headers(cookie),
             **request_params
         )
-        params = convert_params(res)
+        params = convert(res)
         log and logging.info(f'获取get_robot_data成功')
         return params
 
@@ -114,11 +96,7 @@ def get_page(**kwargs):
             method='POST',
             url='http://www.iwencai.com/gateway/urp/v7/landing/getDataList',
             data=data,
-            headers={
-                'hexin-v': get_token(),
-                'User-Agent': ua.random,
-                'cookie': cookie
-            },
+            headers=headers(cookie),
             timeout=(5, 10),
             **request_params
         )
