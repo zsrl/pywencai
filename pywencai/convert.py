@@ -50,7 +50,6 @@ def tab4_handler(comp, comps):
 
 def tab1_handler(comp, comps):
     '''tab1类型'''
-    print(comp, 'comp')
     result = {}
     data = comp.get('data')
     for tab in comp.get('tab_list'):
@@ -114,18 +113,9 @@ show_type_handler_dict = {
     'textblocklinkone': textblocklinkone_handler
 }
 
-
-def filter_handler(comp):
-    '''过滤show_type类型'''
-    if 'title_config' in comp.keys() or comp.get('show_type') == 'wiki1':
-        return True
-    return False
-
-
 def show_type_handler(comp, comps):
     '''处理每种不同的show_type类型'''
     show_type = comp.get('show_type')
-    print(show_type, 'show_type')
     handler = show_type_handler_dict.get(show_type)
     if handler is not None:
         return handler(comp, comps)
@@ -134,16 +124,13 @@ def show_type_handler(comp, comps):
 
 def get_key(comp):
     '''获取每一项的key'''
-    h1 = _.get(comp, 'title_config.data.h1')
-    if h1 is None:
-        h1 = _.get(comp, 'config.title')
+    h1 = _.get(comp, 'title_config.data.h1') or _.get(comp, 'config.title') or _.get(comp, 'show_type')
     return h1
 
 def multi_show_type_handler(components):
     '''处理多个show_type类型的数据'''
-    comps = list(filter(filter_handler, components))
     result = {}
-    for comp in comps:
+    for comp in components:
         key = get_key(comp)
         value = show_type_handler(comp, components)
         if key is not None and key != '' and value is not None:
@@ -156,8 +143,6 @@ def convert(res):
     '''处理get_robot_data的结果'''
     result = json.loads(res.text)
     content = _.get(result, 'data.answer.0.txt.0.content')
-    print(content)
-    # print(map(content, lambda c: c.get('show_type')))
     if type(content) == str:
         content = json.loads(content)
     components = content['components'] 
