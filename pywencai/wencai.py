@@ -7,10 +7,12 @@ import pydash as _
 from pywencai.convert import convert
 from pywencai.headers import headers
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='[pywencai] %(asctime)s - %(levelname)s - %(message)s'
-)
+handler = logging.StreamHandler()
+handler.setFormatter(logging.Formatter('[pywencai] %(asctime)s - %(levelname)s - %(message)s'))
+logger = logging.getLogger(__name__)
+logger.addHandler(handler)
+logger.setLevel(logging.INFO)
+
 
 def while_do(do, retry=10, sleep=0, log=False):
     count = 0
@@ -19,7 +21,7 @@ def while_do(do, retry=10, sleep=0, log=False):
         try:
             return do()
         except:
-            log and logging.warning(f'{count+1}次尝试失败')
+            log and logger.warning(f'{count+1}次尝试失败')
             count += 1
     return None
 
@@ -42,7 +44,7 @@ def get_robot_data(**kwargs):
     }
 
     count = 0
-    log and logging.info(f'获取condition开始')
+    log and logger.info(f'获取condition开始')
 
     def do():
         res = rq.request(
@@ -53,13 +55,13 @@ def get_robot_data(**kwargs):
             **request_params
         )
         params = convert(res)
-        log and logging.info(f'获取get_robot_data成功')
+        log and logger.info(f'获取get_robot_data成功')
         return params
 
     result = while_do(do, retry, sleep, log)
 
     if result is None:
-        log and logging.info(f'获取get_robot_data失败')
+        log and logger.info(f'获取get_robot_data失败')
 
     return result
 
@@ -89,7 +91,7 @@ def get_page(**kwargs):
         **kwargs
     }
     count = 0
-    log and logging.info(f'第{data.get("page")}页开始')
+    log and logger.info(f'第{data.get("page")}页开始')
 
     def do():
         res = rq.request(
@@ -102,13 +104,13 @@ def get_page(**kwargs):
         )
         result = json.loads(res.text)
         list = result['answer']['components'][0]['data']['datas']
-        log and logging.info(f'第{data.get("page")}页成功')
+        log and logger.info(f'第{data.get("page")}页成功')
         return pd.DataFrame.from_dict(list)
     
     result = while_do(do, retry, sleep, log)
 
     if result is None:
-        log and logging.error(f'第{data.get("page")}页失败')
+        log and logger.error(f'第{data.get("page")}页失败')
 
     return result
 
