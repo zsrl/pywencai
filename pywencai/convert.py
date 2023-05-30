@@ -96,7 +96,10 @@ def wiki1_handler(comp, comps):
         )
         result = json.loads(res.text)
         wcomp = result.get('data')
-        return show_type_handler(wcomp, comps)
+        if wcomp is not None:
+            return show_type_handler(wcomp, comps)
+        else:
+            return {}
     return {}
 
 
