@@ -158,4 +158,8 @@ def get(loop=False, **kwargs):
         else:
             return get_page(**kwargs)
     else:
-        return data
+        no_detail = kwargs.get('no_detail')
+        if no_detail != True:
+            return data
+        else:
+            return None

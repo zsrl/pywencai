@@ -91,7 +91,7 @@ print(res)
 
 #### log
 
-非必填，默认为Flase，是否在控制台打印日志。
+非必填，默认为`False`，是否在控制台打印日志。
 
 #### cookie
 
@@ -105,6 +105,10 @@ print(res)
 pywencai.get(question='昨日涨幅', sort_order='asc', loop=True, log=True, request_params={ 'proxies': proxies, 'timeout': (5, 10) })
 ```
 > 具体参数参看：[https://requests.readthedocs.io/en/latest/api/#requests.request](https://requests.readthedocs.io/en/latest/api/#requests.request)
+
+#### no_detail
+
+非必填，默认为`False`，当为`True`时，查询一些**详情类问题**不再会返回字典，而返回`None`，可以保证查询结果类型一直为`pd.DataFrame`或`None`。
 
 ### 返回值
 
