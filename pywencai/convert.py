@@ -30,8 +30,8 @@ def container_handler(comp, comps):
             result[key] = show_type_handler(child, comps)
     return result
 
-def txt1_handler(comp, comps):
-    '''txt1类型'''
+def txt_handler(comp, comps):
+    '''txt类型'''
     content = _.get(comp, 'data.content')
     return content
 
@@ -105,9 +105,9 @@ def wiki1_handler(comp, comps):
 
 
 show_type_handler_dict = {
-    'xuangu_tableV1': xuangu_tableV1_handler,
     'container': container_handler,
-    'txt1': txt1_handler,
+    'txt1': txt_handler,
+    'txt2': txt_handler,
     'tab4': tab4_handler,
     'dragon_tiger_stock': dragon_tiger_stock_handler,
     'table2': table2_handler,
@@ -152,9 +152,15 @@ def convert(res):
     params = {}
     if len(components) == 1:
         components0 = components[0]
-        params = {
-            'data': show_type_handler(components0, components)
-        } 
+        if (components0.get('show_type') == 'xuangu_tableV1'):
+            params = {
+                'data': xuangu_tableV1_handler(components0, components)
+            }
+        else:
+            params = {
+                'data': show_type_handler(components0, components)
+            }
+        
     else:
         params = {
             'data': multi_show_type_handler(components)
