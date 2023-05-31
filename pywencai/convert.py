@@ -4,6 +4,15 @@ import pydash as _
 import requests as rq
 from pywencai.headers import headers
 
+def get_url(url):
+    res = rq.request(
+        method='GET',
+        url=f'http://www.iwencai.com{url}',
+        headers=headers()
+    )
+    result = json.loads(res.text)
+    return result.get('data')
+
 def xuangu_tableV1_handler(comp, comps):
     '''xuangu_tableV1类型'''
     return {
@@ -18,7 +27,7 @@ def common_handler(comp, comps):
     if isinstance(datas, list):
         return pd.DataFrame.from_dict(datas)
     else:
-        return None
+        return _.get(comp, 'data')
 
 def container_handler(comp, comps):
     '''container类型'''
@@ -78,29 +87,31 @@ def dragon_tiger_stock_handler(comp, comps):
         }
     return result
 
-def table2_handler(comp, comps):
-    data = _.get(comp, 'data')
-    return pd.DataFrame.from_dict(data)
+def wiki1_handler(comp, comps):
+    url = _.get(comp, 'data.url')
+    if url is not None:
+        wcomp = get_url(url)
+        if wcomp is not None:
+            return show_type_handler(wcomp, comps)
+        else:
+            return None
+    return None
 
 def textblocklinkone_handler(comp, comps):
     data = _.get(comp, 'data.result.data')
     return pd.DataFrame.from_dict(data)
 
-def wiki1_handler(comp, comps):
-    url = _.get(comp, 'data.url')
-    if url is not None:
-        res = rq.request(
-            method='GET',
-            url=f'http://www.iwencai.com{url}',
-            headers=headers()
-        )
-        result = json.loads(res.text)
-        wcomp = result.get('data')
-        if wcomp is not None:
-            return show_type_handler(wcomp, comps)
-        else:
-            return {}
-    return {}
+def nestedblocks_handler(comp, comps):
+    '''股东户数分析'''
+    subBlocks = _.get(comp, 'data.result.subBlocks.0.subBlocks')
+    result = []
+    for sub in subBlocks:
+        url = sub.get('url')
+        sub_comp = get_url(url)
+        if sub_comp is not None:
+            result.append(show_type_handler(sub_comp, comps))
+    return result
+
 
 
 
@@ -110,10 +121,10 @@ show_type_handler_dict = {
     'txt2': txt_handler,
     'tab4': tab4_handler,
     'dragon_tiger_stock': dragon_tiger_stock_handler,
-    'table2': table2_handler,
     'tab1': tab1_handler,
     'wiki1': wiki1_handler,
-    'textblocklinkone': textblocklinkone_handler
+    'textblocklinkone': textblocklinkone_handler,
+    'nestedblocks': nestedblocks_handler
 }
 
 def show_type_handler(comp, comps):
