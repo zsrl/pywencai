@@ -150,7 +150,7 @@ def get(loop=False, **kwargs):
     kwargs = {replace_key(key): value for key, value in kwargs.items()}
     params = get_robot_data(**kwargs)
     data = params.get('data')
-    condition = data.get('condition')
+    condition = _.get(data, 'condition')
     if condition is not None:
         kwargs = {**kwargs, **data}
         if loop:

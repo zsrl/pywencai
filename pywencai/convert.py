@@ -161,17 +161,10 @@ def convert(res):
         content = json.loads(content)
     components = content['components'] 
     params = {}
-    if len(components) == 1:
-        components0 = components[0]
-        if (components0.get('show_type') == 'xuangu_tableV1'):
-            params = {
-                'data': xuangu_tableV1_handler(components0, components)
-            }
-        else:
-            params = {
-                'data': show_type_handler(components0, components)
-            }
-        
+    if (len(components) == 1 and _.get(components[0], 'show_type') == 'xuangu_tableV1'):
+        params = {
+            'data': xuangu_tableV1_handler(components[0], components)
+        }
     else:
         params = {
             'data': multi_show_type_handler(components)
