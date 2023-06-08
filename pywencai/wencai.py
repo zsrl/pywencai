@@ -1,4 +1,6 @@
 import json
+from typing import List
+
 import requests as rq
 import pandas as pd
 import time
@@ -71,7 +73,8 @@ def replace_key(key):
     key_map = {
         'question': 'query',
         'sort_key': 'urp_sort_index',
-        'sort_order': 'urp_sort_way'
+        'sort_order': 'urp_sort_way',
+        'question2': 'question'
     }
     return key_map.get(key, key)
 
@@ -82,30 +85,48 @@ def get_page(**kwargs):
     sleep = kwargs.pop('sleep', 0)
     log = kwargs.pop('log', False)
     cookie = kwargs.pop('cookie', None)
+    question = kwargs.pop('question', '')
+    query_type = kwargs.get('query_type', 'stock')
     request_params = kwargs.get('request_params', {})
-
-    data = {
-        'perpage': 100,
-        'page': 1,
-        'source': 'Ths_iwencai_Xuangu',
-        **kwargs
-    }
+    if isinstance(question, List):
+        # 传入股票代码列表时，拼接
+        question = ','.join(question)
+    if question == '':
+        data = {
+            'perpage': 100,
+            'page': 1,
+            'source': 'Ths_iwencai_Xuangu',
+            **kwargs
+        }
+        target_url = 'http://www.iwencai.com/gateway/urp/v7/landing/getDataList'
+        path = 'answer.components.0.data.datas'
+    else:
+        data = {
+            'perpage': 100,
+            'page': 1,
+            'source': 'Ths_iwencai_Xuangu',
+            'query_type': query_type,
+            'question': question,
+            **kwargs
+        }
+        target_url = 'http://www.iwencai.com/unifiedwap/unified-wap/v2/stock-pick/find'
+        path = 'data.data.datas'
     count = 0
     log and logger.info(f'第{data.get("page")}页开始')
 
     def do():
         res = rq.request(
             method='POST',
-            url='http://www.iwencai.com/gateway/urp/v7/landing/getDataList',
+            url=target_url,
             data=data,
             headers=headers(cookie),
             timeout=(5, 10),
             **request_params
         )
-        result = json.loads(res.text)
-        list = result['answer']['components'][0]['data']['datas']
+        result_do = json.loads(res.text)
+        data_list = _.get(result_do, path)
         log and logger.info(f'第{data.get("page")}页成功')
-        return pd.DataFrame.from_dict(list)
+        return pd.DataFrame.from_dict(data_list)
     
     result = while_do(do, retry, sleep, log)
 
