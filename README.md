@@ -21,7 +21,7 @@ pip install pywencai
 ```python
 import pywencai
 
-res = pywencai.get(question='退市股票', sort_key='退市@退市日期', sort_order='asc')
+res = pywencai.get(query='退市股票', sort_key='退市@退市日期', sort_order='asc')
 print(res)
 ```
 
@@ -35,9 +35,11 @@ print(res)
 
 ### 参数
 
-#### question
+#### query
 
 必填，查询问句
+
+> 老版本的question参数1.0版本以后会弃用，请以后统一使用query参数
 
 #### sort_key
 
@@ -102,13 +104,19 @@ print(res)
 非必填，默认为`{}`，可以设置额外的request参数
 
 ```python
-pywencai.get(question='昨日涨幅', sort_order='asc', loop=True, log=True, request_params={ 'proxies': proxies, 'timeout': (5, 10) })
+pywencai.get(query='昨日涨幅', sort_order='asc', loop=True, log=True, request_params={ 'proxies': proxies, 'timeout': (5, 10) })
 ```
 > 具体参数参看：[https://requests.readthedocs.io/en/latest/api/#requests.request](https://requests.readthedocs.io/en/latest/api/#requests.request)
 
 #### no_detail
 
 非必填，默认为`False`，当为`True`时，查询一些**详情类问题**不再会返回字典，而返回`None`，可以保证查询结果类型一直为`pd.DataFrame`或`None`。
+
+#### find
+
+非必填，默认为`None`，可以传一个数组，例如`['600519', '0000010']`，数组内的对应标的会排列在DataFrame的最前面。
+
+**【注意】** 1、该参数只有结果范围DataFrame时有效。2、配置该参数后，loop参数会失效，结果只会返回前100条。
 
 ### 返回值
 

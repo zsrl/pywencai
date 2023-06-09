@@ -45,7 +45,6 @@ def get_robot_data(**kwargs):
         'question': question
     }
 
-    count = 0
     log and logger.info(f'获取condition开始')
 
     def do():
@@ -73,8 +72,7 @@ def replace_key(key):
     key_map = {
         'question': 'query',
         'sort_key': 'urp_sort_index',
-        'sort_order': 'urp_sort_way',
-        'question2': 'question'
+        'sort_order': 'urp_sort_way'
     }
     return key_map.get(key, key)
 
@@ -85,13 +83,10 @@ def get_page(**kwargs):
     sleep = kwargs.pop('sleep', 0)
     log = kwargs.pop('log', False)
     cookie = kwargs.pop('cookie', None)
-    question = kwargs.pop('question', '')
+    find = kwargs.pop('find', None)
     query_type = kwargs.get('query_type', 'stock')
     request_params = kwargs.get('request_params', {})
-    if isinstance(question, List):
-        # 传入股票代码列表时，拼接
-        question = ','.join(question)
-    if question == '':
+    if find is None:
         data = {
             'perpage': 100,
             'page': 1,
@@ -101,17 +96,20 @@ def get_page(**kwargs):
         target_url = 'http://www.iwencai.com/gateway/urp/v7/landing/getDataList'
         path = 'answer.components.0.data.datas'
     else:
+        if isinstance(find, List):
+            # 传入股票代码列表时，拼接
+            find = ','.join(find)
         data = {
-            'perpage': 100,
+            'perpage': 500,
             'page': 1,
             'source': 'Ths_iwencai_Xuangu',
             'query_type': query_type,
-            'question': question,
+            'question': find,
             **kwargs
         }
         target_url = 'http://www.iwencai.com/unifiedwap/unified-wap/v2/stock-pick/find'
         path = 'data.data.datas'
-    count = 0
+    
     log and logger.info(f'第{data.get("page")}页开始')
 
     def do():
@@ -174,7 +172,8 @@ def get(loop=False, **kwargs):
     condition = _.get(data, 'condition')
     if condition is not None:
         kwargs = {**kwargs, **data}
-        if loop:
+        find = kwargs.get('find', None)
+        if loop and find is None:
             return loop_page(loop, **kwargs)
         else:
             return get_page(**kwargs)
