@@ -112,7 +112,7 @@ pywencai.get(query='昨日涨幅', sort_order='asc', loop=True, log=True, reques
 
 #### find
 
-非必填，默认为`None`，可以传一个数组，例如`['600519', '0000010']`，数组内的对应标的会排列在DataFrame的最前面。
+非必填，默认为`None`，可以传一个数组，例如`['600519', '000010']`，数组内的对应标的会排列在DataFrame的最前面。
 
 **【注意】** 1、该参数只有结果范围DataFrame时有效。2、配置该参数后，loop参数会失效，结果只会返回前100条。
 
