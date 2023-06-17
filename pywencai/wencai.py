@@ -1,5 +1,6 @@
 import json
 from typing import List
+import math
 
 import requests as rq
 import pandas as pd
@@ -100,7 +101,7 @@ def get_page(**kwargs):
             # 传入股票代码列表时，拼接
             find = ','.join(find)
         data = {
-            'perpage': 500,
+            'perpage': 100,
             'page': 1,
             'source': 'Ths_iwencai_Xuangu',
             'query_type': query_type,
@@ -123,6 +124,10 @@ def get_page(**kwargs):
         )
         result_do = json.loads(res.text)
         data_list = _.get(result_do, path)
+        # print(len(data_list))
+        if len(data_list) == 0:
+            log and logger.error(f'第{data.get("page")}页返回空！')
+            raise Exception("data_list is empty!")
         log and logger.info(f'第{data.get("page")}页成功')
         return pd.DataFrame.from_dict(data_list)
     
@@ -135,26 +140,22 @@ def get_page(**kwargs):
 
 
 def can_loop(loop, count):
-    '''是否继续循环'''
-    if (loop is True):
-        return True
-    else:
-        return count < loop
+    return count < loop
 
 
-def loop_page(loop, **kwargs):
+def loop_page(loop, row_count, **kwargs):
     '''循环分页'''
     count = 0
-    resultPageLen = 1
+    perpage = kwargs.pop('perpage', 100)
+    max_page = math.ceil(row_count / perpage)
     result = None
     if 'page' not in kwargs:
         kwargs['page'] = 1
     initPage = kwargs['page']
-
-    while resultPageLen > 0 and can_loop(loop, count):
+    loop_count = max_page if loop is True else loop
+    while can_loop(loop_count, count):
         kwargs['page'] = initPage + count
         resultPage = get_page(**kwargs)
-        resultPageLen = len(resultPage)
         count = count + 1
         if result is None:
             result = resultPage
@@ -174,7 +175,8 @@ def get(loop=False, **kwargs):
         kwargs = {**kwargs, **data}
         find = kwargs.get('find', None)
         if loop and find is None:
-            return loop_page(loop, **kwargs)
+            row_count = params.get('row_count')
+            return loop_page(loop, row_count, **kwargs)
         else:
             return get_page(**kwargs)
     else:

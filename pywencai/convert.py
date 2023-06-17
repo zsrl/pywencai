@@ -163,7 +163,8 @@ def convert(res):
     params = {}
     if (len(components) == 1 and _.get(components[0], 'show_type') == 'xuangu_tableV1'):
         params = {
-            'data': xuangu_tableV1_handler(components[0], components)
+            'data': xuangu_tableV1_handler(components[0], components),
+            'row_count' : _.get(components[0], 'data.meta.extra.row_count')
         }
     else:
         params = {
