@@ -93,9 +93,21 @@ print(res)
 
 非必填，默认为`False`，是否在控制台打印日志。
 
+#### pro
+
+非必填，默认为False，付费版传True，
+
+> 必须传入cookie参数才能使用付费版
+
+
 #### cookie
 
-非必填，默认为None，付费版可以尝试传入cookie，获取付费使用权限。
+非必填，默认为None，免费版可以忽略，付费版必须传入cookie，获取付费使用权限。
+
+```python
+pywencai.get(question='近3个月每日市盈率', pro=True, cookie='xxxx')
+```
+ 
 
 #### request_params
 

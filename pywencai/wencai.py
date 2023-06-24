@@ -46,6 +46,11 @@ def get_robot_data(**kwargs):
         'question': question
     }
 
+    pro = kwargs.get('pro', False)
+
+    if pro:
+        data['iwcpro'] = 1
+
     log and logger.info(f'获取condition开始')
 
     def do():
@@ -87,6 +92,7 @@ def get_page(**kwargs):
     find = kwargs.pop('find', None)
     query_type = kwargs.get('query_type', 'stock')
     request_params = kwargs.get('request_params', {})
+    pro = kwargs.get('pro', False)
     if find is None:
         data = {
             'perpage': 100,
@@ -95,6 +101,8 @@ def get_page(**kwargs):
             **kwargs
         }
         target_url = 'http://www.iwencai.com/gateway/urp/v7/landing/getDataList'
+        if pro:
+            target_url = f'{target_url}?iwcpro=1'
         path = 'answer.components.0.data.datas'
     else:
         if isinstance(find, List):
