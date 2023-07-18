@@ -16,6 +16,10 @@
 pip install pywencai
 ```
 
+## 视频教程
+
+[如何使用Python获取同花顺问财数据？全网最简单方法！](https://www.bilibili.com/video/BV1NP411C7UU/)
+
 # Demo
 
 ```python
