@@ -140,10 +140,6 @@ pywencai.get(query='昨日涨幅', sort_order='asc', loop=True, log=True, reques
 
 ## 联系方式
 
-欢迎加入QQ群，分享量化技术！
-
-<img src="./qrcode.png" width=400>
-
 微信公众号
 
 <img src="./weixin.jpg" width=400>
