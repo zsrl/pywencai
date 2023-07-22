@@ -7,8 +7,8 @@ import pandas as pd
 import time
 import logging
 import pydash as _
-from pywencai.convert import convert
-from pywencai.headers import headers
+from .convert import convert
+from .headers import headers
 
 handler = logging.StreamHandler()
 handler.setFormatter(logging.Formatter('[pywencai] %(asctime)s - %(levelname)s - %(message)s'))

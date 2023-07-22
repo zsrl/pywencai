@@ -2,7 +2,7 @@ import pandas as pd
 import json
 import pydash as _
 import requests as rq
-from pywencai.headers import headers
+from .headers import headers
 
 def get_url(url):
     res = rq.request(
