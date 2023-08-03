@@ -122,7 +122,7 @@ show_type_handler_dict = {
     'tab4': tab4_handler,
     'dragon_tiger_stock': dragon_tiger_stock_handler,
     'tab1': tab1_handler,
-    'wiki1': wiki1_handler,
+    # 'wiki1': wiki1_handler,
     'textblocklinkone': textblocklinkone_handler,
     'nestedblocks': nestedblocks_handler
 }
