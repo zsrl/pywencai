@@ -37,6 +37,7 @@ def get_robot_data(**kwargs):
     log = kwargs.get('log', False)
     query_type = kwargs.get('query_type', 'stock')
     cookie = kwargs.get('cookie', None)
+    user_agent = kwargs.get('user_agent', None)
     request_params = kwargs.get('request_params', {})
     data = {
         'perpage': 10,
@@ -58,7 +59,7 @@ def get_robot_data(**kwargs):
             method='POST',
             url='http://www.iwencai.com/customized/chart/get-robot-data',
             json=data,
-            headers=headers(cookie),
+            headers=headers(cookie, user_agent),
             **request_params
         )
         params = convert(res)
@@ -89,6 +90,7 @@ def get_page(**kwargs):
     sleep = kwargs.pop('sleep', 0)
     log = kwargs.pop('log', False)
     cookie = kwargs.pop('cookie', None)
+    user_agent = kwargs.get('user_agent', None)
     find = kwargs.pop('find', None)
     query_type = kwargs.get('query_type', 'stock')
     request_params = kwargs.get('request_params', {})
@@ -126,7 +128,7 @@ def get_page(**kwargs):
             method='POST',
             url=target_url,
             data=data,
-            headers=headers(cookie),
+            headers=headers(cookie, user_agent),
             timeout=(5, 10),
             **request_params
         )

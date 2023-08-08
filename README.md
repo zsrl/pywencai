@@ -14,10 +14,10 @@
 
 **2、安装`jsdom`**
 
-新版hexin-v.js使用了`jsdom`这个包，所以需要你的Node.js环境中有这个包
+新版hexin-v.js使用了`jsdom`这个包，所以需要你的Node.js环境中有这个包，建议在你自己的项目下本地安装
 
 ```
-npm install jsdom -g
+npm install jsdom
 ```
 
 测试jsdom是否已在当前Node.js环境中
@@ -149,6 +149,10 @@ pywencai.get(query='昨日涨幅', sort_order='asc', loop=True, log=True, reques
 非必填，默认为`None`，可以传一个数组，例如`['600519', '000010']`，数组内的对应标的会排列在DataFrame的最前面。
 
 **【注意】** 1、该参数只有结果范围DataFrame时有效。2、配置该参数后，loop参数会失效，结果只会返回前100条。
+
+#### user_agent
+
+非必填，默认为`None`，可以自己传`user_agent`，不使用随机的生成的`user_agent`
 
 ### 返回值
 

@@ -1,8 +1,5 @@
 import os
 import execjs
-from fake_useragent import UserAgent
-
-ua = UserAgent()
 
 def get_token():
     '''获取token'''
@@ -11,9 +8,16 @@ def get_token():
     context = execjs.compile(jscontent)
     return context.call("v")
 
-def headers(cookie=None):
+def headers(cookie=None, user_agent=None):
+
+    if user_agent is None:
+        from fake_useragent import UserAgent
+        ua = UserAgent()
+        user_agent = ua.random
+        
+
     return {
         'hexin-v': get_token(),
-        'User-Agent': ua.random,
+        'User-Agent': user_agent,
         'cookie': cookie
     }
