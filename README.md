@@ -17,8 +17,16 @@
 新版hexin-v.js使用了`jsdom`这个包，所以需要你的Node.js环境中有这个包
 
 ```
-npm install jsdom
+npm install jsdom -g
 ```
+
+测试jsdom是否已在当前Node.js环境中
+
+```
+node -e "require('jsdom')" 
+```
+
+> 如果你使用了Node.js的虚拟环境，请自己想办法安装到当前运行的node环境下
 
 ## 安装
 
