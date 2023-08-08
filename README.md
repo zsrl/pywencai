@@ -6,9 +6,19 @@
 
 ## 环境依赖
 
+**1、安装Node.js**
+
 由于程序中执行了js代码，请先保证已安装了[Node.js](https://nodejs.org/en/)
 
 未安装请自行安装
+
+**2、安装`jsdom`**
+
+新版hexin-v.js使用了`jsdom`这个包，所以需要你的Node.js环境中有这个包
+
+```
+npm install jsdom
+```
 
 ## 安装
 
