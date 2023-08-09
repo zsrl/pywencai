@@ -877,8 +877,10 @@ var TOKEN_SERVER_TIME = 1670329000.280;
             }
 
             function W() {
-                for (var n = [], t = r[52]; t < parseInt(a[79], a[93]); t++)
-                    n[t] = tn[t]();
+                // for (var n = [], t = r[52]; t < parseInt(a[79], a[93]); t++)
+                //     try {
+                //         n[t] = tn[t]();
+                //     } catch {}
                 return Jn.booleanToDecimal(n)
             }
 
@@ -1405,4 +1407,4 @@ function v () {
     return _red()
 }
 // 测试用例
-// console.log(white());
+console.log(v());

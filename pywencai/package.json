@@ -1,0 +1,21 @@
+{
+  "name": "pywencai",
+  "version": "1.0.0",
+  "description": "",
+  "main": "hexin-v.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bufferutil": "^4.0.7",
+    "canvas": "^2.11.2",
+    "jsdom": "^22.1.0",
+    "utf-8-validate": "^6.0.3"
+  },
+  "devDependencies": {
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  }
+}

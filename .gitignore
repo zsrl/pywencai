@@ -129,3 +129,6 @@ dmypy.json
 .pyre/
 demo.ipynb
 .vscode
+package-lock.json
+node_modules
+
