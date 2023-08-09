@@ -6,33 +6,16 @@
 
 ## 环境依赖
 
-**1、安装Node.js**
-
-由于程序中执行了js代码，请先保证已安装了[Node.js](https://nodejs.org/en/)
+由于程序中执行了js代码，请先保证已安装了[Node.js](https://nodejs.org/en/)，需要版本**v16+**
 
 未安装请自行安装
-
-**2、安装`jsdom`**
-
-新版hexin-v.js使用了`jsdom`这个包，所以需要你的Node.js环境中有这个包，建议在你自己的项目下本地安装
-
-```
-npm install jsdom
-```
-
-测试jsdom是否已在当前Node.js环境中
-
-```
-node -e "require('jsdom')" 
-```
-
-> 如果你使用了Node.js的虚拟环境，请自己想办法安装到当前运行的node环境下
 
 ## 安装
 
 ```
 pip install pywencai
 ```
+> 由于问财接口策略经常发生变化，请安装最新版本使用，遇到问题时，优先尝试升级解决
 
 ## 视频教程
 
