@@ -27,6 +27,3 @@ types-requests = "^2.30.0.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
-pre-install = "python scripts/pre_install_script.py"
