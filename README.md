@@ -112,6 +112,9 @@ print(res)
 ```python
 pywencai.get(question='近3个月每日市盈率', pro=True, cookie='xxxx')
 ```
+cookie获取方法，复制请求头中的Cookie字段值
+
+![cookie](./cookie.png)
  
 
 #### request_params
