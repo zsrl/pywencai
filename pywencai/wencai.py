@@ -45,6 +45,7 @@ def get_robot_data(**kwargs):
         'page': 1,
         'source': 'Ths_iwencai_Xuangu',
         'log_info': "{\"input_type\":\"click\"}",
+        'version': '2.0',
         'secondary_intent': query_type,
         'question': question
     }
