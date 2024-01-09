@@ -40,9 +40,11 @@ def get_robot_data(**kwargs):
     user_agent = kwargs.get('user_agent', None)
     request_params = kwargs.get('request_params', {})
     data = {
-        'perpage': 10,
+        'add_info': "{\"urp\":{\"scene\":1,\"company\":1,\"business\":1},\"contentType\":\"json\",\"searchInfo\":true}",
+        'perpage': '10',
         'page': 1,
         'source': 'Ths_iwencai_Xuangu',
+        'log_info': "{\"input_type\":\"click\"}",
         'secondary_intent': query_type,
         'question': question
     }
@@ -134,7 +136,7 @@ def get_page(**kwargs):
         )
         result_do = json.loads(res.text)
         data_list = _.get(result_do, path)
-        # print(len(data_list))
+
         if len(data_list) == 0:
             log and logger.error(f'第{data.get("page")}页返回空！')
             raise Exception("data_list is empty!")
