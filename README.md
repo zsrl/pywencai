@@ -1,5 +1,8 @@
 [![PyPI version](https://badge.fury.io/py/pywencai.svg)](https://badge.fury.io/py/pywencai)
 [![Downloads](https://static.pepy.tech/badge/pywencai/month)](https://pepy.tech/project/pywencai)
+
+![知识星球](./zsxq.png)
+
 # pywencai
 
 获取同花顺问财数据
@@ -145,12 +148,3 @@ pywencai.get(query='昨日涨幅', sort_order='asc', loop=True, log=True, reques
 当查询的是列表时，该方法返回一个`pandas`的`Dataframe`
 
 当查询的是详情时，该方法返回一个字典，字典中可能包含若干个文本和`Dataframe`
-
-## 联系方式
-
-微信公众号
-
-<img src="./weixin.jpg" width=400>
-
-
-
