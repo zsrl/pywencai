@@ -19,9 +19,8 @@ jobs:
           pip install auto-changelog
 
       - name: Build and publish to PyPI
-        uses: JRubics/poetry-publish@v1.13
+        uses: JRubics/poetry-publish@v2.1
         with:
-          ignore_dev_requirements: "yes"
           pypi_token: ${{ secrets.PYPI_TOKEN }}
 
       - name: Changelog
