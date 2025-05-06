@@ -87,7 +87,7 @@ def replace_key(key):
     return key_map.get(key, key)
 
 
-def get_page(**kwargs):
+def get_page(url_params, **kwargs):
     '''获取每页数据'''
     retry = kwargs.pop('retry', 10)
     sleep = kwargs.pop('sleep', 0)
@@ -100,9 +100,9 @@ def get_page(**kwargs):
     pro = kwargs.get('pro', False)
     if find is None:
         data = {
+            **url_params,
             'perpage': 100,
             'page': 1,
-            'source': 'Ths_iwencai_Xuangu',
             **kwargs
         }
         target_url = 'http://www.iwencai.com/gateway/urp/v7/landing/getDataList'
@@ -114,9 +114,9 @@ def get_page(**kwargs):
             # 传入股票代码列表时，拼接
             find = ','.join(find)
         data = {
+             **url_params,
             'perpage': 100,
             'page': 1,
-            'source': 'Ths_iwencai_Xuangu',
             'query_type': query_type,
             'question': find,
             **kwargs
@@ -156,7 +156,7 @@ def can_loop(loop, count):
     return count < loop
 
 
-def loop_page(loop, row_count, **kwargs):
+def loop_page(loop, row_count, url_params, **kwargs):
     '''循环分页'''
     count = 0
     perpage = kwargs.pop('perpage', 100)
@@ -168,7 +168,7 @@ def loop_page(loop, row_count, **kwargs):
     loop_count = max_page if loop is True else loop
     while can_loop(loop_count, count):
         kwargs['page'] = initPage + count
-        resultPage = get_page(**kwargs)
+        resultPage = get_page(url_params, **kwargs)
         count = count + 1
         if result is None:
             result = resultPage
@@ -183,15 +183,17 @@ def get(loop=False, **kwargs):
     kwargs = {replace_key(key): value for key, value in kwargs.items()}
     params = get_robot_data(**kwargs)
     data = params.get('data')
+    url_params = params.get('url_params')
     condition = _.get(data, 'condition')
+    
     if condition is not None:
         kwargs = {**kwargs, **data}
         find = kwargs.get('find', None)
         if loop and find is None:
             row_count = params.get('row_count')
-            return loop_page(loop, row_count, **kwargs)
+            return loop_page(loop, row_count, url_params, **kwargs)
         else:
-            return get_page(**kwargs)
+            return get_page(url_params, **kwargs)
     else:
         no_detail = kwargs.get('no_detail')
         if no_detail != True:

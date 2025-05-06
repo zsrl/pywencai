@@ -2,6 +2,7 @@ import pandas as pd
 import json
 import pydash as _
 import requests as rq
+from urllib.parse import urlparse, parse_qs
 from .headers import headers
 
 def get_url(url):
@@ -152,6 +153,23 @@ def multi_show_type_handler(components):
 
     return result
 
+def parse_url_params(url):
+    """Parse URL parameters into a dictionary"""
+    if not url:
+        return {}
+    
+    # Parse the URL
+    parsed_url = urlparse(url)
+    
+    # Extract query parameters
+    query_params = parse_qs(parsed_url.query)
+    
+    # Convert values from lists to single values if list has only one item
+    for key, value in query_params.items():
+        if isinstance(value, list) and len(value) == 1:
+            query_params[key] = value[0]
+            
+    return query_params
 
 def convert(res):
     '''处理get_robot_data的结果'''
@@ -161,13 +179,21 @@ def convert(res):
         content = json.loads(content)
     components = content['components'] 
     params = {}
+    url = None
+    
     if (len(components) == 1 and _.get(components[0], 'show_type') == 'xuangu_tableV1'):
+        url = _.get(components[0], 'config.other_info.footer_info.url')
         params = {
             'data': xuangu_tableV1_handler(components[0], components),
-            'row_count' : _.get(components[0], 'data.meta.extra.row_count')
+            'row_count': _.get(components[0], 'data.meta.extra.row_count'),
+            'url': url,
+            'url_params': parse_url_params(url)
         }
     else:
+        url = _.get(components[0], 'config.other_info.footer_info.url')
         params = {
-            'data': multi_show_type_handler(components)
+            'data': multi_show_type_handler(components),
+            'url': url,
+            'url_params': parse_url_params(url)
         }
     return params
