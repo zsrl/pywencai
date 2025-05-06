@@ -13,7 +13,7 @@ jobs:
         uses: astral-sh/setup-uv@v3
 
       - name: Set up Python
-        run: uv python install 3.12  # Or whatever version I want to use.
+        run: uv python install 3.10  # Or whatever version I want to use.
 
       - name: Build
         run: uv build
