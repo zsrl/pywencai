@@ -1,28 +1,42 @@
-[tool.poetry]
+[tool.pdm.dev-dependencies]
+dev = [
+    "notebook<7.0.0,>=6.4.12",
+    "mypy<2.0.0,>=1.2.0",
+    "autopep8<3.0.0,>=2.0.2",
+    "types-requests<3.0.0.0,>=2.30.0.0",
+]
+
+[[tool.pdm.source]]
+name = "tsinghua"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+verify_ssl = true
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[project]
+authors = [
+    {name = "pluto", email = "mayuanchi1029@gmail.com"},
+]
+requires-python = "<4.0,>=3.8"
+dependencies = [
+    "PyExecJS<2.0.0,>=1.5.1",
+    "requests",
+    "pandas>=1.5.0",
+    "fake-useragent<2.0.0,>=1.1.1",
+    "pydash<8.0.0,>=7.0.3",
+    "ipykernel>=6.29.5",
+]
 name = "pywencai"
 version = "0.13.1"
 description = ""
-authors = ["pluto <mayuanchi1029@gmail.com>"]
 readme = "README.md"
 
-[[tool.poetry.source]]
-name = "tsinghua"
-url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
-
-[tool.poetry.dependencies]
-python = "^3.8"
-PyExecJS = "^1.5.1"
-requests = "*"
-pandas = {version = "^1.5.0 || ^2.0.0"}
-fake-useragent = "^1.1.1"
-pydash = "^7.0.3"
-
-[tool.poetry.group.dev.dependencies]
-notebook = "^6.4.12"
-mypy = "^1.2.0"
-autopep8 = "^2.0.2"
-types-requests = "^2.30.0.0"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[dependency-groups]
+dev = [
+    "notebook<7.0.0,>=6.4.12",
+    "mypy<2.0.0,>=1.2.0",
+    "autopep8<3.0.0,>=2.0.2",
+    "types-requests<3.0.0.0,>=2.30.0.0",
+]
