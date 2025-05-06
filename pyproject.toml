@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pywencai"
-version = "0.12.3"
+version = "0.13.0"
 description = ""
 authors = ["pluto <mayuanchi1029@gmail.com>"]
 readme = "README.md"

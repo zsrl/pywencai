@@ -131,4 +131,5 @@ demo.ipynb
 .vscode
 package-lock.json
 node_modules
-
+test.ipynb
+uv.lock
