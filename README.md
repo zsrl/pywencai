@@ -1,11 +1,11 @@
 [![PyPI version](https://badge.fury.io/py/pywencai.svg)](https://badge.fury.io/py/pywencai)
 [![Downloads](https://static.pepy.tech/badge/pywencai/month)](https://pepy.tech/project/pywencai)
 
-![知识星球](./zsxq.png)
-
 # pywencai
 
 获取同花顺问财数据
+
+⚠️**注意**：由于问财登录策略调整，目前**必填cookie参数**才能使用，可以参看下面关于如何获取cookie参数的介绍
 
 ## 环境依赖
 
@@ -29,7 +29,7 @@ pip install pywencai
 ```python
 import pywencai
 
-res = pywencai.get(query='退市股票', sort_key='退市@退市日期', sort_order='asc')
+res = pywencai.get(query='退市股票', sort_key='退市@退市日期', sort_order='asc', cookie='xxx')
 print(res)
 ```
 
@@ -110,7 +110,7 @@ print(res)
 
 #### cookie
 
-非必填，默认为None，免费版可以忽略，付费版必须传入cookie，获取付费使用权限。
+**必填**，默认为None
 
 ```python
 pywencai.get(question='近3个月每日市盈率', pro=True, cookie='xxxx')
